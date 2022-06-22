@@ -58,3 +58,9 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+GDNETWK-Client/Library/
+GDNETWK-Server/Library/
+GDNETWK-Client/Logs/
+GDNETWK-Server/Logs/
+GDNETWK-Client/Temp/
+GDNETWK-Server/Temp/
