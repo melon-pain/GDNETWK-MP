@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour, IDamageInterface
     public static Dictionary<int, Enemy> enemies = new Dictionary<int, Enemy>();
     private static int nextID = 1;
     private int id;
+    [SerializeField] private GameObject itemPrefab;
     public int ID
     {
         get
@@ -128,6 +129,10 @@ public class Enemy : MonoBehaviour, IDamageInterface
     private void Death()
     {
         ServerSend.EnemyDestroyed(this);
+
+        GameObject instance = Instantiate(itemPrefab, transform.position, transform.rotation);
+
+
 
         enemies.Remove(id);
         gameObject.SetActive(false);

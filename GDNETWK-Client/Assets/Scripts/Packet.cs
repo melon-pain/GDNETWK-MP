@@ -20,7 +20,9 @@ public enum ServerPackets
     enemyTransform,
     enemyHealth,
     enemyDestroyed,
-    podTransform
+    podTransform,
+    spawnItem,
+    destroyItem
 }
 
 /// <summary>Sent from client to server.</summary>

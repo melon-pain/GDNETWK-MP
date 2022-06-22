@@ -101,6 +101,26 @@ public class ClientReceive : MonoBehaviour
         GameManager.Instance.SpawnEnemy(id, position, rotation);
     }
 
+    public static void SpawnItem(Packet packet)
+    {
+        int id = packet.ReadInt();
+        Vector3 position = packet.ReadVector3();
+
+        GameManager.Instance.SpawnItem(id, position);
+    }
+
+    public static void DestroyItem(Packet packet)
+    {
+        int id = packet.ReadInt();
+
+        if(GameManager.items.TryGetValue(id, out Item item))
+        {
+            GameManager.items.Remove(id);
+            item.gameObject.SetActive(false);
+            Destroy(item.gameObject, 3.0f);
+        }
+    }
+
     public static void EnemyTransform(Packet packet)
     {
         int id = packet.ReadInt();

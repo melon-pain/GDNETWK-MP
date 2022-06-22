@@ -129,6 +129,23 @@ public class ServerSend
         SendTCPDataToAll(packet);
     }
 
+    public static void SpawnItem(Item item)
+    {
+        using Packet packet = new Packet((int)ServerPackets.spawnItem);
+        packet.Write(item.ID);
+        packet.Write(item.transform.position);
+
+        SendTCPDataToAll(packet);
+    }
+
+    public static void DestroyItem(Item item)
+    {
+        using Packet packet = new Packet((int)ServerPackets.destroyItem);
+        packet.Write(item.ID);
+
+        SendTCPDataToAll(packet);
+    }
+
     public static void SpawnEnemyToClient(int playerID, Enemy enemy)
     {
         using Packet packet = new Packet((int)ServerPackets.spawnEnemy);

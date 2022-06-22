@@ -136,6 +136,13 @@ public class Player : MonoBehaviour, IDamageInterface
         Debug.Log("Take Damage");
     }
 
+    public void Heal(float amount)
+    {
+        Health = Mathf.Clamp(Health + amount, 0, maxHealth);
+
+        Debug.Log("Heal");
+    }
+
     public void ProjectileAbility(bool inIsShooting)
     {
         isShooting = inIsShooting;

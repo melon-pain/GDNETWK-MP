@@ -64,11 +64,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125c364343dbac640ada2379097c283b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 4466113137527684400, guid: 6b9071eaa7aa8fc499fe42b95f15b13c, type: 3}
   controller: {fileID: 1059744432512438349}
   moveSpeed: 1
   maxHealth: 100
   health: 0
   fireRate: 1
+  range: 10
   shootOrigin: {fileID: 8863694089031769139}
   layerMask:
     serializedVersion: 2

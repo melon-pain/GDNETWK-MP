@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public static Dictionary<int, Player> players = new Dictionary<int, Player>();
     public static Dictionary<int, Projectile> projectiles = new Dictionary<int, Projectile>();
     public static Dictionary<int, Enemy> enemies = new Dictionary<int, Enemy>();
+    public static Dictionary<int, Item> items = new Dictionary<int, Item>();
 
     [SerializeField]
     private GameObject localPlayerPrefab;
@@ -30,6 +31,8 @@ public class GameManager : MonoBehaviour
     private GameObject enemyPrefab;
     [SerializeField]
     private GameObject enemyProjectilePrefab;
+    [SerializeField]
+    private GameObject itemPrefab;
 
     private void Awake()
     {
@@ -82,5 +85,13 @@ public class GameManager : MonoBehaviour
         Enemy enemy = instance.GetComponent<Enemy>();
         enemy.Init(id);
         enemies.Add(id, enemy);
+    }
+
+    public void SpawnItem(int id, Vector3 position)
+    {
+        GameObject instance = Instantiate(itemPrefab, position, Quaternion.identity);
+        Item item = instance.GetComponent<Item>();
+        item.Init(id);
+        items.Add(id, item);
     }
 }

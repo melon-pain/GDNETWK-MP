@@ -81,6 +81,8 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.enemyHealth, ClientReceive.EnemyHealth},
             { (int)ServerPackets.enemyDestroyed, ClientReceive.EnemyDestroyed},
             { (int)ServerPackets.podTransform, ClientReceive.PodTransform},
+            { (int)ServerPackets.spawnItem, ClientReceive.SpawnItem},
+            { (int)ServerPackets.destroyItem, ClientReceive.DestroyItem},
         };
 
         Debug.Log("Initialized packets.");
