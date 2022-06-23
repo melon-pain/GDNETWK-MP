@@ -22,7 +22,8 @@ public enum ServerPackets
     enemyDestroyed,
     podTransform,
     spawnItem,
-    destroyItem
+    destroyItem,
+    playerDeath
 }
 
 /// <summary>Sent from client to server.</summary>

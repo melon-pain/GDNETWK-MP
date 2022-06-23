@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     private float health;
     [SerializeField]
     private Image healthBar;
+    [SerializeField]
+    private bool isDead = false;
 
     public float Health
     {
@@ -66,6 +68,8 @@ public class Player : MonoBehaviour
         nameTag.text = inUsername;
 
         health = maxHealth;
+
+        isDead = false;
     }
 
     private void Start()
@@ -76,6 +80,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (isDead == true)
+        {
+            return;
+        }
+
         if (id == Client.Instance.ID)
         {
             Vector2 mousePos = Camera.main.ScreenToViewportPoint(Input.mousePosition) * 2.0f - Vector3.one;
@@ -88,6 +97,11 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead == true)
+        {
+            return;
+        }
+
         SendMovementInputServer();
 
         ClientSend.PlayerProjectile(Input.GetMouseButton(0));
@@ -108,9 +122,14 @@ public class Player : MonoBehaviour
         ClientSend.PlayerMovement(inputs);
     }
 
-    private void Death()
+    public void Death()
     {
+        isDead = true;
+    }
 
+    public void Respawn()
+    {
+        isDead = false;
     }
     
     public void UpdateTransform(Vector3 targetPos, Quaternion targetRot)

@@ -90,4 +90,11 @@ public class NetworkManager : MonoBehaviour
 
         yield break;
     }
+
+    public void RespawnPlayer(Player player)
+    {
+        player.transform.position = spawnPoints[player.ID - 1].position;
+
+        player.Respawn();
+    }
 }

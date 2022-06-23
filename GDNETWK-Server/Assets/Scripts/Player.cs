@@ -51,6 +51,11 @@ public class Player : MonoBehaviour, IDamageInterface
         {
             health = Mathf.Clamp(value, 0.0f, maxHealth);
             ServerSend.PlayerHealth(this);
+
+            if (health <= 0.0f)
+            {
+                Death();
+            }
         }
     }
     [SerializeField]
@@ -172,5 +177,31 @@ public class Player : MonoBehaviour, IDamageInterface
     {
         pod.transform.rotation = rotation;
         ServerSend.PodTransform(this);
+    }
+
+    public void Death()
+    {
+        ServerSend.PlayerDeath(this);
+
+        StartCoroutine(respawnTimer());
+    }
+
+    public void Respawn()
+    {
+        Health = maxHealth;
+
+        ServerSend.PlayerTransform(this);
+
+        ServerSend.PlayerRespawned(this);
+    }
+
+    [SerializeField]
+    private float respawn = 10.0f;
+
+    private IEnumerator respawnTimer()
+    {
+        yield return new WaitForSeconds(respawn);
+
+        NetworkManager.Instance.RespawnPlayer(this);
     }
 }

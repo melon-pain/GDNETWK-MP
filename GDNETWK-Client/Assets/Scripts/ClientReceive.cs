@@ -173,4 +173,24 @@ public class ClientReceive : MonoBehaviour
             player.UpdatePodRotation(rotation);
         }
     }
+
+    public static void PlayerDeath(Packet packet)
+    {
+        int id = packet.ReadInt();
+
+        if (GameManager.players.TryGetValue(id, out Player player))
+        {
+            player.Death();
+        }
+    }
+
+    public static void PlayerRespawn(Packet packet)
+    {
+        int id = packet.ReadInt();
+
+        if (GameManager.players.TryGetValue(id, out Player player))
+        {
+            player.Respawn();
+        }
+    }
 }
