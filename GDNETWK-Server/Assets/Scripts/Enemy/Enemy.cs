@@ -16,12 +16,22 @@ public class Enemy : MonoBehaviour, IDamageInterface
         }
     }
 
+    private static int spawnMultiplier = 1;
+    public static int SpawnMultiplier
+    {
+        get
+        {
+            return spawnMultiplier;
+        }
+    }
+    public const int maxSpawnMultiplier = 3;
+
     private static int maxEnemiesSpawned = 20;
     public static int MaxEnemiesSpawned
     {
         get
         {
-            return maxEnemiesSpawned;
+            return maxEnemiesSpawned * spawnMultiplier;
         }
     }
 
@@ -101,11 +111,14 @@ public class Enemy : MonoBehaviour, IDamageInterface
 
             foreach (var client in Server.clients.Values)
             {
-                float clientDist = Vector3.Distance(transform.position, client.player.transform.position);
-                if (clientDist < dist)
+                if (client.player != null)
                 {
-                    dist = clientDist;
-                    targetPlayer = client.player;
+                    float clientDist = Vector3.Distance(transform.position, client.player.transform.position);
+                    if (clientDist < dist)
+                    {
+                        dist = clientDist;
+                        targetPlayer = client.player;
+                    }
                 }
             }
 
@@ -132,8 +145,6 @@ public class Enemy : MonoBehaviour, IDamageInterface
 
         GameObject instance = Instantiate(itemPrefab, transform.position, transform.rotation);
 
-
-
         enemies.Remove(id);
         gameObject.SetActive(false);
         Destroy(gameObject, 3.0f);
@@ -143,14 +154,24 @@ public class Enemy : MonoBehaviour, IDamageInterface
     {
         var wait = new WaitForSeconds(fireRate);
 
-        while (true)
+        while (Health > 0.0f)
         {
             yield return wait;
+
+            while(!targetPlayer)
+            {
+                yield return null;
+            }
 
             if (Vector3.Distance(transform.position, targetPlayer.transform.position) <= range)
             {
                 NetworkManager.Instance.InstantiateProjectile(ProjectileSource.Enemy, shootOrigin.transform);
             }
         }
+    }
+
+    public static void IncreaseSpawnMultiplier()
+    {
+        spawnMultiplier = Mathf.Clamp(spawnMultiplier + 1, 0, maxSpawnMultiplier);
     }
 }

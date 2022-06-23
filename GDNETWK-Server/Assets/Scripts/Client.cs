@@ -51,14 +51,14 @@ public class Client
         }
 
         /// <summary>Sends data to the client via TCP.</summary>
-        /// <param name="_packet">The packet to send.</param>
-        public void SendData(Packet _packet)
+        /// <param name="packet">The packet to send.</param>
+        public void SendData(Packet packet)
         {
             try
             {
                 if (socket != null)
                 {
-                    stream.BeginWrite(_packet.ToArray(), 0, _packet.Length(), null, null); // Send data to appropriate client
+                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null); // Send data to appropriate client
                 }
             }
             catch (Exception e)
@@ -176,27 +176,27 @@ public class Client
     /// <param name="playerName">The username of the new player.</param>
     public void SendIntoGame(string playerName)
     {
-        player = NetworkManager.Instance.InstantiatePlayer();
+        player = NetworkManager.Instance.InstantiatePlayer(id);
         player.Init(id, playerName);
 
         // Send all players to the new player
-        foreach (Client _client in Server.clients.Values)
+        foreach (Client client in Server.clients.Values)
         {
-            if (_client.player != null)
+            if (client.player != null)
             {
-                if (_client.id != id)
+                if (client.id != id)
                 {
-                    ServerSend.SpawnPlayer(id, _client.player);
+                    ServerSend.SpawnPlayer(id, client.player);
                 }
             }
         }
 
         // Send the new player to all players (including self)
-        foreach (Client _client in Server.clients.Values)
+        foreach (Client client in Server.clients.Values)
         {
-            if (_client.player != null)
+            if (client.player != null)
             {
-                ServerSend.SpawnPlayer(_client.id, player);
+                ServerSend.SpawnPlayer(client.id, player);
             }
         }
 

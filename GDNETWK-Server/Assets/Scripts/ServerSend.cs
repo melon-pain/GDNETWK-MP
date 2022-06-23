@@ -142,6 +142,7 @@ public class ServerSend
     {
         using Packet packet = new Packet((int)ServerPackets.destroyItem);
         packet.Write(item.ID);
+        packet.Write(item.PickedUp);
 
         SendTCPDataToAll(packet);
     }

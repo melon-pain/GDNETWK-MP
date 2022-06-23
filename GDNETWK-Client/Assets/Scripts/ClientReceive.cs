@@ -88,7 +88,8 @@ public class ClientReceive : MonoBehaviour
         {
             projectile.Explode();
             GameManager.projectiles.Remove(id);
-            Destroy(projectile.gameObject);
+            projectile.gameObject.SetActive(false);
+            Destroy(projectile.gameObject, 3.0f);
         }
     }
 
@@ -112,9 +113,15 @@ public class ClientReceive : MonoBehaviour
     public static void DestroyItem(Packet packet)
     {
         int id = packet.ReadInt();
+        bool pickedUp = packet.ReadBool();
 
         if(GameManager.items.TryGetValue(id, out Item item))
         {
+            // Only show particles when picked up
+            if (pickedUp)
+            {
+                item.Explode();
+            }
             GameManager.items.Remove(id);
             item.gameObject.SetActive(false);
             Destroy(item.gameObject, 3.0f);

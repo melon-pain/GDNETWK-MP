@@ -16,28 +16,37 @@ public class Item : MonoBehaviour
         }
     }
 
+    private bool pickedUp = false;
+    public bool PickedUp
+    {
+        get
+        {
+            return pickedUp;
+        }
+    }
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         id = nextId;
         nextId++;
         items.Add(id, this);
 
         ServerSend.SpawnItem(this);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        StartCoroutine(Expire());
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
-            player.Heal(healAmount);
-            DestroyItem();
+            // Only heal when health is lower than max health
+            if (player.Health < player.MaxHealth)
+            {
+                player.Heal(healAmount);
+                pickedUp = true;
+                DestroyItem();
+            }
         }
     }
 
@@ -48,5 +57,11 @@ public class Item : MonoBehaviour
         items.Remove(id);
         gameObject.SetActive(false);
         Destroy(gameObject, 3.0f);
+    }
+
+    private IEnumerator Expire()
+    {
+        yield return new WaitForSeconds(5.0f);
+        DestroyItem();
     }
 }

@@ -19,6 +19,9 @@ public class NetworkManager : MonoBehaviour
     [SerializeField]
     private GameObject enemyProjectilePrefab;
 
+    [SerializeField]
+    private List<Transform> spawnPoints = new();
+
     private static NetworkManager instance;
     public static NetworkManager Instance
     {
@@ -43,9 +46,11 @@ public class NetworkManager : MonoBehaviour
     private void Start()
     {
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 120;
 
         Server.Start(maxPlayers, port);
+
+        StartCoroutine(IncreaseEnemySpawn());
     }
 
     private void OnApplicationQuit()
@@ -53,9 +58,9 @@ public class NetworkManager : MonoBehaviour
         Server.Stop();
     }
 
-    public Player InstantiatePlayer()
+    public Player InstantiatePlayer(int clientID)
     {
-        return Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
+        return Instantiate(playerPrefab, spawnPoints[clientID - 1].position, Quaternion.identity).GetComponent<Player>();
     }
 
     public Projectile InstantiateProjectile(ProjectileSource source, Transform origin)
@@ -66,5 +71,23 @@ public class NetworkManager : MonoBehaviour
     public Enemy InstantiateEnemy(Vector3 position)
     {
         return Instantiate(enemyPrefab, position, Quaternion.identity).GetComponent<Enemy>();
+    }
+
+    private IEnumerator IncreaseEnemySpawn()
+    {
+        // Increase max spawned enemies every 30s
+        while (Enemy.SpawnMultiplier < Enemy.maxSpawnMultiplier)
+        {
+            // Do not increase spawn if no clients are connected
+            while (!Server.AreAnyClientsConnected())
+            {
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(30.0f);
+            Enemy.IncreaseSpawnMultiplier();
+        }
+
+        yield break;
     }
 }
