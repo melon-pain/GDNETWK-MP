@@ -124,6 +124,9 @@ public class Player : MonoBehaviour, IDamageInterface
 
     private void FixedUpdate()
     {
+        if (isDead)
+            return;
+
         Vector2 input = GatherMovementInput().normalized;
         Vector3 direction = new Vector3(input.x, 0.0f, input.y);
         isMoving = direction.sqrMagnitude > 0.0f;
@@ -168,7 +171,7 @@ public class Player : MonoBehaviour, IDamageInterface
 
         while (true)
         {
-            if (isShooting)
+            if (isShooting && !isDead)
             {
                 Projectile projectile = NetworkManager.Instance.InstantiateProjectile(ProjectileSource.Player, pod.transform);
                 projectile.Init(id);
