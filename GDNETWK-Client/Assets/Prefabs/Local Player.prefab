@@ -136,9 +136,11 @@ MonoBehaviour:
   username: 
   nameTag: {fileID: 8369183080345733781}
   animator: {fileID: 9014227735012251892}
+  model: {fileID: 2356231589323380788}
   maxHealth: 100
   health: 0
   healthBar: {fileID: 1984907163825897820}
+  isDead: 0
   pod: {fileID: 7660180438562327888}
 --- !u!1 &2438876184294736280
 GameObject:

@@ -111,7 +111,11 @@ public class Enemy : MonoBehaviour, IDamageInterface
 
             foreach (var client in Server.clients.Values)
             {
-                if (client.player != null)
+                if (client.player == null)
+                {
+                    continue;
+                }
+                if (!client.player.IsDead)
                 {
                     float clientDist = Vector3.Distance(transform.position, client.player.transform.position);
                     if (clientDist < dist)

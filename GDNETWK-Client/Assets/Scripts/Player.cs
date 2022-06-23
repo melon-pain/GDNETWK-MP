@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
             return animator;
         }
     }
+    [SerializeField]
+    private GameObject model;
 
     [Header("Attributes")]
     [SerializeField]
@@ -80,7 +82,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isDead == true)
+        if (isDead)
         {
             return;
         }
@@ -97,7 +99,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDead == true)
+        if (isDead)
         {
             return;
         }
@@ -125,11 +127,15 @@ public class Player : MonoBehaviour
     public void Death()
     {
         isDead = true;
+        model.SetActive(false);
+        pod.SetActive(false);
     }
 
     public void Respawn()
     {
         isDead = false;
+        model.SetActive(true);
+        pod.SetActive(true);
     }
     
     public void UpdateTransform(Vector3 targetPos, Quaternion targetRot)

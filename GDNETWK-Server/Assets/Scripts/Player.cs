@@ -39,6 +39,15 @@ public class Player : MonoBehaviour, IDamageInterface
         }
     }
 
+    private bool isDead = false;
+    public bool IsDead
+    {
+        get
+        {
+            return isDead;
+        }
+    }
+
     private float health;
     public float Health
     {
@@ -52,7 +61,7 @@ public class Player : MonoBehaviour, IDamageInterface
             health = Mathf.Clamp(value, 0.0f, maxHealth);
             ServerSend.PlayerHealth(this);
 
-            if (health <= 0.0f)
+            if (health <= 0.0f && !isDead)
             {
                 Death();
             }
@@ -181,6 +190,7 @@ public class Player : MonoBehaviour, IDamageInterface
 
     public void Death()
     {
+        isDead = true;
         ServerSend.PlayerDeath(this);
 
         StartCoroutine(respawnTimer());
@@ -188,15 +198,15 @@ public class Player : MonoBehaviour, IDamageInterface
 
     public void Respawn()
     {
+        isDead = false;
         Health = maxHealth;
 
         ServerSend.PlayerTransform(this);
-
         ServerSend.PlayerRespawned(this);
     }
 
     [SerializeField]
-    private float respawn = 10.0f;
+    private float respawn = 5.0f;
 
     private IEnumerator respawnTimer()
     {
