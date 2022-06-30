@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private int id;
+    public int ID => id;
     [SerializeField]
     private string username;
     [SerializeField]
@@ -87,19 +88,19 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (id == Client.Instance.ID)
-        {
-            Vector2 mousePos = Camera.main.ScreenToViewportPoint(Input.mousePosition) * 2.0f - Vector3.one;
-            float angle = (Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg) - 90.0f;
-            Vector3 direction = new Vector3(0.0f, -angle, 0.0f);
+        //if (id == Client.Instance.ID)
+        //{
+        //    Vector2 mousePos = Camera.main.ScreenToViewportPoint(Input.mousePosition) * 2.0f - Vector3.one;
+        //    float angle = (Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg) - 90.0f;
+        //    Vector3 direction = new Vector3(0.0f, -angle, 0.0f);
 
-            pod.transform.rotation = Quaternion.Euler(direction);
-        }
+        //    pod.transform.rotation = Quaternion.Euler(direction);
+        //}
     }
 
     private void FixedUpdate()
     {
-        if (isDead)
+        if (isDead || !Application.isFocused)
         {
             return;
         }
@@ -108,7 +109,7 @@ public class Player : MonoBehaviour
 
         ClientSend.PlayerProjectile(Input.GetMouseButton(0));
 
-        ClientSend.PodRotation(pod.transform.rotation);
+        ClientSend.PodRotation(Camera.main.ScreenToViewportPoint(Input.mousePosition) * 2.0f - Vector3.one);
     }
 
     private void SendMovementInputServer()
@@ -196,12 +197,18 @@ public class Player : MonoBehaviour
 
         Quaternion oldPodRotation = pod.transform.rotation;
 
-        while (t < Time.fixedDeltaTime)
+        while (t < Time.fixedDeltaTime && Time.deltaTime < Time.fixedDeltaTime)
         {
+            if (Time.deltaTime < Time.fixedDeltaTime)
+            {
+                break;
+            }
             pod.transform.rotation = Quaternion.Lerp(oldPodRotation, targetPodRotation, t / Time.fixedDeltaTime);
             t += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
+        pod.transform.rotation = targetPodRotation;
 
         updatePodRotationCoroutine = null;
         yield break;

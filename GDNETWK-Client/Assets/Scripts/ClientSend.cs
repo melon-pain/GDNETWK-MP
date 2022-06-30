@@ -42,10 +42,10 @@ public class ClientSend : MonoBehaviour
         SendTCPData(packet);
     }
 
-    public static void PodRotation(Quaternion rotation)
+    public static void PodRotation(Vector3 mousePosition)
     {
         using Packet packet = new Packet((int)ClientPackets.playerPod);
-        packet.Write(rotation);
+        packet.Write(mousePosition);
 
         SendTCPData(packet);
     }

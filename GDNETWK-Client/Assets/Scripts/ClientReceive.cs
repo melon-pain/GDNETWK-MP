@@ -192,6 +192,4 @@ public class ClientReceive : MonoBehaviour
             player.UpdatePodRotation(rotation);
         }
     }
-
-    
 }

@@ -44,9 +44,12 @@ public class ServerReceive
 
     public static void PlayerPod(int fromClient, Packet packet)
     {
-        Quaternion rotation = packet.ReadQuaternion();
+        Vector3 mousePosition = packet.ReadVector3();
 
-        Server.clients[fromClient].player.RotatePod(rotation);
+        float angle = (Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg) - 90.0f;
+        Vector3 direction = new Vector3(0.0f, -angle, 0.0f);
+
+        Server.clients[fromClient].player.RotatePod(Quaternion.Euler(direction));
 
         packet.Dispose();
     }

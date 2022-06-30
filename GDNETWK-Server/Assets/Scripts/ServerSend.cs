@@ -206,7 +206,7 @@ public class ServerSend
         packet.Write(player.ID);
         packet.Write(player.Pod.transform.rotation);
 
-        SendTCPDataToAll(player.ID, packet);
+        SendTCPDataToAll(packet);
     }
 
 }

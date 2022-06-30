@@ -115,6 +115,7 @@ public class Player : MonoBehaviour, IDamageInterface
             transform.forward = direction;
         }
 
+        ServerSend.PodTransform(this);
         ServerSend.PlayerTransform(this);
     }
 
@@ -126,14 +127,11 @@ public class Player : MonoBehaviour, IDamageInterface
     public void TakeDamage(float amount)
     {
         Health -= amount;
-        Debug.Log("Take Damage");
     }
 
     public void Heal(float amount)
     {
         Health = Mathf.Clamp(Health + amount, 0, maxHealth);
-
-        Debug.Log("Heal");
     }
 
     public void ProjectileAbility(bool inIsShooting)
@@ -164,7 +162,6 @@ public class Player : MonoBehaviour, IDamageInterface
     public void RotatePod(Quaternion rotation)
     {
         pod.transform.rotation = rotation;
-        ServerSend.PodTransform(this);
     }
 
     public void Death()
