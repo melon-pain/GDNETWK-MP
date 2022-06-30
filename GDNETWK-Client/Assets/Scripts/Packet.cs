@@ -12,6 +12,7 @@ public enum ServerPackets
     playerTransform,
     playerDisconnected,
     playerHealth,
+    playerDeath,
     playerRespawned,
     spawnProjectile,
     projectileTransform,
@@ -23,7 +24,6 @@ public enum ServerPackets
     podTransform,
     spawnItem,
     destroyItem,
-    playerDeath
 }
 
 /// <summary>Sent from client to server.</summary>

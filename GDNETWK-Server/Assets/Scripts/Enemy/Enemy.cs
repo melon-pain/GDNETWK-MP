@@ -16,24 +16,12 @@ public class Enemy : MonoBehaviour, IDamageInterface
         }
     }
 
-    private static int spawnMultiplier = 1;
-    public static int SpawnMultiplier
-    {
-        get
-        {
-            return spawnMultiplier;
-        }
-    }
-    public const int maxSpawnMultiplier = 3;
+    private static float spawnMultiplier = 1.0f;
+    public static float SpawnMultiplier => spawnMultiplier;
+    public const float maxSpawnMultiplier = 3.0f;
 
-    private static int maxEnemiesSpawned = 20;
-    public static int MaxEnemiesSpawned
-    {
-        get
-        {
-            return maxEnemiesSpawned * spawnMultiplier;
-        }
-    }
+    private static int maxEnemiesSpawned = 12;
+    public static int MaxEnemiesSpawned => (int)(maxEnemiesSpawned * spawnMultiplier);
 
     private Player targetPlayer = null;
 
@@ -91,13 +79,20 @@ public class Enemy : MonoBehaviour, IDamageInterface
 
     private void FixedUpdate()
     {
-        if (targetPlayer != null)
+        if (!targetPlayer)
+            return;
+
+        if (!targetPlayer.IsDead)
         {
             Vector3 dir = (targetPlayer.transform.position - transform.position).normalized;
             transform.LookAt(targetPlayer.transform);
             transform.eulerAngles = new Vector3(0.0f, transform.eulerAngles.y, 0.0f);
 
             controller.Move(((dir * moveSpeed) + (Physics.gravity)) * Time.fixedDeltaTime);
+        }
+        else
+        {
+            LookForNewPlayer();
         }
 
         ServerSend.EnemyTransform(this);
@@ -107,35 +102,43 @@ public class Enemy : MonoBehaviour, IDamageInterface
     {
         while (Health > 0.0f)
         {
-            float dist = float.PositiveInfinity;
+            LookForNewPlayer();
 
-            foreach (var client in Server.clients.Values)
-            {
-                if (client.player == null)
-                {
-                    continue;
-                }
-                if (!client.player.IsDead)
-                {
-                    float clientDist = Vector3.Distance(transform.position, client.player.transform.position);
-                    if (clientDist < dist)
-                    {
-                        dist = clientDist;
-                        targetPlayer = client.player;
-                    }
-                }
-            }
-
-            //Target not found
-            if (dist == float.PositiveInfinity)
-            {
-                targetPlayer = null;
-            }
-
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(3.0f);
         }
 
         yield break;
+    }
+
+    private bool LookForNewPlayer()
+    {
+        float dist = float.PositiveInfinity;
+
+        foreach (var client in Server.clients.Values)
+        {
+            if (client.player == null)
+            {
+                continue;
+            }
+            if (!client.player.IsDead)
+            {
+                float clientDist = Vector3.Distance(transform.position, client.player.transform.position);
+                if (clientDist < dist)
+                {
+                    dist = clientDist;
+                    targetPlayer = client.player;
+                }
+            }
+        }
+
+        //Target not found
+        if (dist == float.PositiveInfinity)
+        {
+            targetPlayer = null;
+            return false;
+        }
+
+        return true;
     }
 
     public void TakeDamage(float amount)
@@ -167,7 +170,7 @@ public class Enemy : MonoBehaviour, IDamageInterface
                 yield return null;
             }
 
-            if (Vector3.Distance(transform.position, targetPlayer.transform.position) <= range)
+            if (Vector3.Distance(transform.position, targetPlayer.transform.position) <= range && !targetPlayer.IsDead)
             {
                 NetworkManager.Instance.InstantiateProjectile(ProjectileSource.Enemy, shootOrigin.transform);
             }
@@ -176,6 +179,6 @@ public class Enemy : MonoBehaviour, IDamageInterface
 
     public static void IncreaseSpawnMultiplier()
     {
-        spawnMultiplier = Mathf.Clamp(spawnMultiplier + 1, 0, maxSpawnMultiplier);
+        spawnMultiplier = Mathf.Clamp(spawnMultiplier + 0.2f, 0, maxSpawnMultiplier);
     }
 }

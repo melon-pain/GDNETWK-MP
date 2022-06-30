@@ -129,6 +129,22 @@ public class ServerSend
         SendTCPDataToAll(packet);
     }
 
+    public static void PlayerDeath(Player player)
+    {
+        using Packet packet = new Packet((int)ServerPackets.playerDeath);
+        packet.Write(player.ID);
+
+        SendTCPDataToAll(packet);
+    }
+
+    public static void PlayerRespawned(Player player)
+    {
+        using Packet packet = new Packet((int)ServerPackets.playerRespawned);
+        packet.Write(player.ID);
+
+        SendTCPDataToAll(packet);
+    }
+
     public static void SpawnItem(Item item)
     {
         using Packet packet = new Packet((int)ServerPackets.spawnItem);
@@ -193,19 +209,4 @@ public class ServerSend
         SendTCPDataToAll(player.ID, packet);
     }
 
-    public static void PlayerDeath(Player player)
-    {
-        using Packet packet = new Packet((int)ServerPackets.playerDeath);
-        packet.Write(player.ID);
-
-        SendTCPDataToAll(packet);
-    }
-
-    public static void PlayerRespawned(Player player)
-    {
-        using Packet packet = new Packet((int)ServerPackets.playerRespawned);
-        packet.Write(player.ID);
-
-        SendTCPDataToAll(packet);
-    }
 }

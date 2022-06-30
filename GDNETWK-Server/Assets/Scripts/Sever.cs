@@ -31,7 +31,6 @@ public class Server
         Debug.Log($"Server started on port {Port}.");
     }
 
-    /// <summary>Initializes all necessary server data.</summary>
     private static void InitializeServerData()
     {
         for (int i = 1; i <= MaxPlayers; i++)
@@ -50,7 +49,6 @@ public class Server
         Debug.Log("Initialized packets.");
     }
 
-    /// <summary>Handles new TCP connections.</summary>
     private static void TCPConnectCallback(IAsyncResult result)
     {
         TcpClient client = tcpListener.EndAcceptTcpClient(result);
@@ -87,6 +85,5 @@ public class Server
 
         return false;
     }
-
 
 }

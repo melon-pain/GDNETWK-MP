@@ -58,6 +58,25 @@ public class ClientReceive : MonoBehaviour
             player.Health = health;
         }
     }
+    public static void PlayerDeath(Packet packet)
+    {
+        int id = packet.ReadInt();
+
+        if (GameManager.players.TryGetValue(id, out Player player))
+        {
+            player.Death();
+        }
+    }
+
+    public static void PlayerRespawned(Packet packet)
+    {
+        int id = packet.ReadInt();
+
+        if (GameManager.players.TryGetValue(id, out Player player))
+        {
+            player.Respawn();
+        }
+    }
 
     public static void SpawnProjectile(Packet packet)
     {
@@ -174,23 +193,5 @@ public class ClientReceive : MonoBehaviour
         }
     }
 
-    public static void PlayerDeath(Packet packet)
-    {
-        int id = packet.ReadInt();
-
-        if (GameManager.players.TryGetValue(id, out Player player))
-        {
-            player.Death();
-        }
-    }
-
-    public static void PlayerRespawn(Packet packet)
-    {
-        int id = packet.ReadInt();
-
-        if (GameManager.players.TryGetValue(id, out Player player))
-        {
-            player.Respawn();
-        }
-    }
+    
 }

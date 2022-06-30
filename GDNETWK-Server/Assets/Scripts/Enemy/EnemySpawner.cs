@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour
     private float maxSpawnTime = 10.0f;
 
     private float spawnRate = 1.0f;
-    private float maxSpawnRate = 3.0f;
+    private float maxSpawnRate = 2.0f;
 
     private void Start()
     {

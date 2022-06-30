@@ -73,6 +73,8 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.playerTransform, ClientReceive.PlayerTransform },
             { (int)ServerPackets.playerDisconnected, ClientReceive.PlayerDisconnected },
             { (int)ServerPackets.playerHealth, ClientReceive.PlayerHealth },
+            { (int)ServerPackets.playerDeath, ClientReceive.PlayerDeath},
+            { (int)ServerPackets.playerRespawned, ClientReceive.PlayerRespawned},
             { (int)ServerPackets.spawnProjectile, ClientReceive.SpawnProjectile},
             { (int)ServerPackets.projectileTransform, ClientReceive.ProjectileTransform},
             { (int)ServerPackets.projectileDestroyed, ClientReceive.ProjectileDestroyed},
@@ -83,8 +85,6 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.podTransform, ClientReceive.PodTransform},
             { (int)ServerPackets.spawnItem, ClientReceive.SpawnItem},
             { (int)ServerPackets.destroyItem, ClientReceive.DestroyItem},
-            { (int)ServerPackets.playerDeath, ClientReceive.PlayerDeath},
-            { (int)ServerPackets.playerRespawned, ClientReceive.PlayerRespawn},
         };
 
         Debug.Log("Initialized packets.");

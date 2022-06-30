@@ -161,9 +161,14 @@ public class Player : MonoBehaviour
 
         while (t < Time.fixedDeltaTime && Time.deltaTime < Time.fixedDeltaTime)
         {
+            if (Time.deltaTime < Time.fixedDeltaTime)
+            {
+                break;
+            }
+
             transform.SetPositionAndRotation(Vector3.Lerp(oldPosition, targetPosition, t / Time.fixedDeltaTime), Quaternion.Lerp(oldRotation, targetRotation, t / Time.fixedDeltaTime));
             t += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
 
         transform.SetPositionAndRotation(targetPosition, targetRotation);

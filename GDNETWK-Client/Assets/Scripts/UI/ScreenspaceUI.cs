@@ -10,7 +10,7 @@ public class ScreenspaceUI : MonoBehaviour
     [SerializeField]
     private Graphic graphic;
 
-    private void Update()
+    private void FixedUpdate()
     {
         graphic.rectTransform.position = Camera.main.WorldToScreenPoint(follow.position);
     }

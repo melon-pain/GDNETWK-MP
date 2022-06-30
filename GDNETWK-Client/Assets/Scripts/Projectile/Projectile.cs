@@ -41,12 +41,19 @@ public class Projectile : MonoBehaviour
 
         Vector3 oldPosition = transform.position;
 
-        while (t < Time.fixedDeltaTime)
+        while (t < Time.fixedDeltaTime && Time.deltaTime < Time.fixedDeltaTime)
         {
+            if (Time.deltaTime < Time.fixedDeltaTime)
+            {
+                break;
+            }
+
             transform.position = Vector3.Lerp(oldPosition, targetPosition, t / Time.fixedDeltaTime);
             t += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
+
+        transform.position = targetPosition;
 
         updatePositionCoroutine = null;
         yield break;

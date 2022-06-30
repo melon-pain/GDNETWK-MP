@@ -20,33 +20,15 @@ public class Player : MonoBehaviour, IDamageInterface
     [SerializeField]
     private float moveSpeed = 5.0f;
     private bool isMoving = false;
-    public bool IsMoving
-    {
-        get
-        {
-            return isMoving;
-        }
-    }
+    public bool IsMoving => isMoving;
 
     [Header("Attributes")]
     [SerializeField]
     private float maxHealth = 100.0f;
-    public float MaxHealth
-    {
-        get
-        {
-            return maxHealth;
-        }
-    }
+    public float MaxHealth => maxHealth;
 
     private bool isDead = false;
-    public bool IsDead
-    {
-        get
-        {
-            return isDead;
-        }
-    }
+    public bool IsDead => isDead;
 
     private float health;
     public float Health
@@ -73,13 +55,7 @@ public class Player : MonoBehaviour, IDamageInterface
 
     [SerializeField]
     private GameObject pod;
-    public GameObject Pod
-    {
-        get
-        {
-            return pod;
-        }
-    }
+    public GameObject Pod => pod;
 
     private bool[] inputs;
 
@@ -179,7 +155,7 @@ public class Player : MonoBehaviour, IDamageInterface
             }
             else
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             
         }
@@ -194,6 +170,7 @@ public class Player : MonoBehaviour, IDamageInterface
     public void Death()
     {
         isDead = true;
+        isMoving = false;
         ServerSend.PlayerDeath(this);
 
         StartCoroutine(respawnTimer());

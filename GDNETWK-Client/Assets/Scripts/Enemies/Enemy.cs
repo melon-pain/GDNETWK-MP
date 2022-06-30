@@ -67,8 +67,13 @@ public class Enemy : MonoBehaviour
         Vector3 oldPosition = transform.position;
         Quaternion oldRotation = transform.rotation;
 
-        while (t < Time.fixedDeltaTime)
+        while (t < Time.fixedDeltaTime && Time.deltaTime < Time.fixedDeltaTime)
         {
+            if (Time.deltaTime < Time.fixedDeltaTime)
+            {
+                break;
+            }
+
             transform.SetPositionAndRotation(
                 Vector3.Lerp(oldPosition, targetPosition, t / Time.fixedDeltaTime), 
                 Quaternion.Lerp(oldRotation, targetRotation, t / Time.fixedDeltaTime));
@@ -77,6 +82,7 @@ public class Enemy : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        transform.SetPositionAndRotation(targetPosition, targetRotation);
         updateTransformCoroutine = null;
         yield break;
     }

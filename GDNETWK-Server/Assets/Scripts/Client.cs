@@ -50,8 +50,6 @@ public class Client
             ServerSend.Welcome(id, "Welcome to the server!");
         }
 
-        /// <summary>Sends data to the client via TCP.</summary>
-        /// <param name="packet">The packet to send.</param>
         public void SendData(Packet packet)
         {
             try
@@ -154,7 +152,6 @@ public class Client
         }
     }
 
-    /// <summary>Disconnects the client and stops all network traffic.</summary>
     private void Disconnect()
     {
         Debug.Log($"{tcp.socket.Client.RemoteEndPoint} has disconnected.");
@@ -172,8 +169,6 @@ public class Client
         ServerSend.PlayerDisconnected(id);
     }
 
-    /// <summary>Sends the client into the game and informs other clients of the new player.</summary>
-    /// <param name="playerName">The username of the new player.</param>
     public void SendIntoGame(string playerName)
     {
         player = NetworkManager.Instance.InstantiatePlayer(id);
@@ -191,7 +186,6 @@ public class Client
             }
         }
 
-        // Send the new player to all players (including self)
         foreach (Client client in Server.clients.Values)
         {
             if (client.player != null)

@@ -46,7 +46,7 @@ public class NetworkManager : MonoBehaviour
     private void Start()
     {
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 60;
 
         Server.Start(maxPlayers, port);
 

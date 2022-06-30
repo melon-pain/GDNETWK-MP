@@ -34,20 +34,31 @@ public class ThreadManager : MonoBehaviour
     /// <summary>Executes all code meant to run on the main thread. NOTE: Call this ONLY from the main thread.</summary>
     public static void UpdateMain()
     {
+        //if (actionToExecuteOnMainThread)
+        //{
+        //    executeCopiedOnMainThread.Clear();
+        //    lock (executeOnMainThread)
+        //    {
+        //        executeCopiedOnMainThread.AddRange(executeOnMainThread);
+        //        executeOnMainThread.Clear();
+        //        actionToExecuteOnMainThread = false;
+        //    }
+
+        //    for (int i = 0; i < executeCopiedOnMainThread.Count; i++)
+        //    {
+        //        executeCopiedOnMainThread[i]();
+        //    }
+        //}
+
         if (actionToExecuteOnMainThread)
         {
-            executeCopiedOnMainThread.Clear();
-            lock (executeOnMainThread)
+            for(int i = 0; i < executeOnMainThread.Count; i++)
             {
-                executeCopiedOnMainThread.AddRange(executeOnMainThread);
-                executeOnMainThread.Clear();
-                actionToExecuteOnMainThread = false;
-            }
-
-            for (int i = 0; i < executeCopiedOnMainThread.Count; i++)
-            {
-                executeCopiedOnMainThread[i]();
+                executeOnMainThread[i]?.Invoke();
             }
         }
+
+        executeOnMainThread.Clear();
+        actionToExecuteOnMainThread = false;
     }
 }
