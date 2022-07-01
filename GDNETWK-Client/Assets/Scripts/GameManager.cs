@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject playerPrefab;
     [SerializeField]
+    private GameObject podPrefab;
+    [SerializeField]
     private GameObject cameraPrefab;
     [SerializeField]
     private GameObject projectilePrefab;

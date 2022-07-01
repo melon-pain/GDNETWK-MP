@@ -12,7 +12,6 @@ public class ScreenspaceUI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (follow != null && graphic != null)
-            graphic.rectTransform.position = Camera.main.WorldToScreenPoint(follow.position);
+        graphic.rectTransform.position = Camera.main.WorldToScreenPoint(follow.position);
     }
 }

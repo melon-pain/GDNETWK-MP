@@ -1752,7 +1752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxPlayers: 4
-  port: 8080
+  port: 7777
   playerPrefab: {fileID: 4766953406480053407, guid: 8ba386a280e14484fabcf9e1369139a8, type: 3}
   projectilePrefab: {fileID: 2910754471894493607, guid: ced0c4b6de528894aa5b05c3b49e4e9b, type: 3}
   enemyPrefab: {fileID: 1877308056993658740, guid: 183cbe70ba26ea641b0af2937fa1427d, type: 3}

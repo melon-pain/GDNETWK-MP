@@ -19,9 +19,9 @@ public class Client : MonoBehaviour
     public static int dataBufferSize = 4096;
 
     [SerializeField]
-    private string ip = "127.0.0.1";
+    public string ip = "127.0.0.1";
     [SerializeField]
-    private int port = 8080;
+    public int port = 8080;
     public int ID;
     public TCP tcp;
 

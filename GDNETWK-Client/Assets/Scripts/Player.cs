@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+
 
 public class Player : MonoBehaviour
 {
@@ -47,7 +49,7 @@ public class Player : MonoBehaviour
             health = Mathf.Clamp(value, 0.0f, maxHealth);
             healthBar.fillAmount = health / maxHealth;
 
-            if (value <= 0.0f)
+            if (value <= 0.0f && !isDead)
             {
                 Death();
             }
@@ -59,10 +61,12 @@ public class Player : MonoBehaviour
     private Coroutine updateTransformCoroutine = null;
 
     [SerializeField]
-    private GameObject pod;
+    public GameObject pod;
     private Quaternion targetPodRotation;
     private Coroutine updatePodRotationCoroutine = null;
 
+    public UnityEvent OnPlayerDeath;
+    public UnityEvent OnPlayerRespawn;
 
     public void Init(in int inID, in string inUsername)
     {
@@ -87,15 +91,6 @@ public class Player : MonoBehaviour
         {
             return;
         }
-
-        //if (id == Client.Instance.ID)
-        //{
-        //    Vector2 mousePos = Camera.main.ScreenToViewportPoint(Input.mousePosition) * 2.0f - Vector3.one;
-        //    float angle = (Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg) - 90.0f;
-        //    Vector3 direction = new Vector3(0.0f, -angle, 0.0f);
-
-        //    pod.transform.rotation = Quaternion.Euler(direction);
-        //}
     }
 
     private void FixedUpdate()
@@ -128,15 +123,13 @@ public class Player : MonoBehaviour
     public void Death()
     {
         isDead = true;
-        model.SetActive(false);
-        pod.SetActive(false);
+        OnPlayerDeath?.Invoke();
     }
 
     public void Respawn()
     {
         isDead = false;
-        model.SetActive(true);
-        pod.SetActive(true);
+        OnPlayerRespawn?.Invoke();
     }
     
     public void UpdateTransform(Vector3 targetPos, Quaternion targetRot)
@@ -168,6 +161,7 @@ public class Player : MonoBehaviour
             }
 
             transform.SetPositionAndRotation(Vector3.Lerp(oldPosition, targetPosition, t / Time.fixedDeltaTime), Quaternion.Lerp(oldRotation, targetRotation, t / Time.fixedDeltaTime));
+
             t += Time.deltaTime;
             yield return null;
         }
